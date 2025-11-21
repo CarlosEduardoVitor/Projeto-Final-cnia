@@ -35,21 +35,19 @@ export const authOptions: NextAuthOptions = {
               email: credentials.email,
               password: credentials.password,
             },
-            { validateStatus: () => true } // não lança erro para status != 2xx, tratamos abaixo
+            { validateStatus: () => true } 
           );
 
           const data = response.data ?? {};
 
-          // Se backend não retornou token => falha
           if (!data?.token) {
             console.error("Login failed: backend did not return token", data);
             return null;
           }
 
-          // normaliza valores que podem estar ausentes
           const user: UserType = {
-            id: data.id ? Number(data.id) : 0, // 0 = unknown id
-            name: data.name ?? "", // pode ser vazio
+            id: data.id ? Number(data.id) : 0, 
+            name: data.name || "", 
             email: data.email ?? credentials.email,
             token: data.token,
           };

@@ -4,20 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { loginSchema } from "../schemas/loginSchemas";
-import { toast } from "sonner";
 import { ZodError } from "zod";
 
 export function useLogin() {
   const [emailLogin, setEmailLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleLogin() {
     setLoading(true);
-    setError(null);
 
     try {
       loginSchema.parse({ email: emailLogin, password: passwordLogin });
@@ -29,22 +25,18 @@ export function useLogin() {
       });
 
       if (res?.error) {
-        toast.error(res.error);
-        setError(res.error);
-      } else {
-        toast.success("Login feito com sucesso!");
-        router.push("/dashboard");
-      }
-    } catch (err: any) {
-      if (err instanceof ZodError) {
-        const firstError = err.issues[0].message;
-        toast.error(firstError);
-        setError(firstError);
-        return;
+        throw new Error(res.error); 
       }
 
-      toast.error("Falha ao logar. Tente novamente.");
-      console.error("Erro no login:", err);
+      router.push("/dashboard");
+      return "Login realizado com sucesso!";
+
+    } catch (err: any) {
+      if (err instanceof ZodError) {
+        throw new Error(err.issues[0].message);
+      }
+
+      throw new Error(err.message || "Falha ao logar.");
     } finally {
       setLoading(false);
     }
@@ -57,6 +49,5 @@ export function useLogin() {
     setPasswordLogin,
     handleLogin,
     loading,
-    error,
   };
 }

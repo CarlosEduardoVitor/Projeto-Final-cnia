@@ -2,7 +2,7 @@
 
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { useTranslations } from "next-intl"; 
-import { toast } from "sonner"; // Importação do Toast
+import { toast } from "sonner"; 
 
 export default function Login() {
   const t = useTranslations("Auth"); 
@@ -12,21 +12,15 @@ export default function Login() {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const loginPromise = handleLogin(e); 
-    
-    await toast.promise(loginPromise, {
-      loading: t('login_pending'),
-      success: () => {
-        // A navegação geralmente ocorre dentro do hook handleLogin em caso de sucesso
-        return t('toast_login_success') || 'Login realizado com sucesso!'; 
-      },
-      error: (err) => {
-        // Captura o erro lançado pelo useLogin
-        const message = err.response?.data?.message || t('toast_login_error') || 'Credenciais inválidas ou erro no servidor.';
-        return message;
-      },
-    });
-  };
+  const loginPromise = handleLogin(); 
+
+  await toast.promise(loginPromise, {
+    loading: t('login_pending'),
+    success: (msg) => msg, 
+    error: (err) => err.message, 
+  });
+};
+
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 w-full min-h-[calc(100vh-56px)] flex justify-center items-center p-4">

@@ -55,7 +55,7 @@ export default function Details() {
 
   return (
     <div className="p-8 max-w-md mx-auto">
-      <h4 className="text-xl font-semibold mb-4">{t('title_profile')}</h4> // i18n
+      <h4 className="text-xl font-semibold mb-4">{t('title_profile')}</h4> 
 
       <Input value={user?.name ?? ""} placeholder="Nome" readOnly className="mb-2" />
       <Input value={user?.email ?? ""} placeholder="Email" readOnly className="mb-2" />

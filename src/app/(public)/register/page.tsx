@@ -2,7 +2,7 @@
 
 import { useRegister } from "@/features/auth/hooks/useRegister";
 import { useTranslations } from "next-intl"; 
-import { toast } from "sonner"; /
+import { toast } from "sonner"; 
 
 export default function Register() {
   const t = useTranslations("Auth"); 
@@ -10,28 +10,21 @@ export default function Register() {
     useRegister();
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (password !== confirmPassword) {
-      toast.error(t('toast_passwords_not_match') || 'As senhas não coincidem.');
-      return;
-    }
-    
-    const registerPromise = handleRegister(e);
+  if (password !== confirmPassword) {
+    toast.error(t('toast_passwords_not_match'));
+    return;
+  }
 
-    await toast.promise(registerPromise, {
-      loading: t('register_pending'),
-      success: () => {
-        // A navegação geralmente ocorre dentro do hook handleRegister em caso de sucesso
-        return t('toast_register_success') || 'Registro realizado com sucesso!';
-      },
-      error: (err) => {
-        // Captura o erro lançado pelo useRegister
-        const message = err.response?.data?.message || t('toast_register_error') || 'Erro ao tentar registrar o usuário.';
-        return message;
-      },
-    });
-  };
+  const registerPromise = handleRegister();
+
+  await toast.promise(registerPromise, {
+    loading: t('register_pending'),
+    success: (msg) => msg,
+    error: (err) => err.message,
+  });
+};
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 w-full min-h-[calc(100vh-56px)] flex justify-center items-center p-4">

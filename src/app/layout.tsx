@@ -3,6 +3,7 @@ import './globals.css';
 import { ReactNode } from "react";
 import Providers from "./Providers";
 import { defaultLocale } from "../../i18n"; 
+import { Toaster } from "sonner";
 
 async function loadMessages(locale: string) {
     try {
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             
             
             <body>
+                <Toaster richColors position="top-right" />
                 <Providers locale={locale} messages={messages}>{children}</Providers> 
             </body>
         </html>
