@@ -21,8 +21,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     
     return (
         <html lang={locale} suppressHydrationWarning> 
-            
-            
             <body>
                 <Toaster richColors position="top-right" />
                 <Providers locale={locale} messages={messages}>{children}</Providers> 
