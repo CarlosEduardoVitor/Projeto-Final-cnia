@@ -1,10 +1,13 @@
 // api.ts
+"use client";
+
 import type { InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 
+// Instância principal para produtos e auth
 export const api = axios.create({
-  baseURL: "http://localhost:8080/api/v1",
+  baseURL: "http://localhost:8080/api",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
@@ -12,7 +15,29 @@ export const api = axios.create({
 api.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const session = await getSession();
-    const token = session?.user?.token;
+    const token = session?.accessToken || session?.user?.token;
+
+    if (token) {
+      config.headers = config.headers ?? {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Nova instância só para rotas de usuário (com /v1/users)
+export const userApi = axios.create({
+  baseURL: "http://localhost:8080/api/v1/users",
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
+});
+
+userApi.interceptors.request.use(
+  async (config: InternalAxiosRequestConfig) => {
+    const session = await getSession();
+    const token = session?.accessToken || session?.user?.token;
 
     if (token) {
       config.headers = config.headers ?? {};
@@ -42,16 +67,20 @@ export interface ProductListParams {
 
 // PRODUCT API
 export const productApi = {
-  get: (id: number | string) => api.get(`/products/${id}`),
-  list: (params?: ProductListParams) => api.get(`/products`, { params }),
-  search: (params?: ProductListParams) => api.get(`/products/search`, { params }),
-  create: (data: ProductPayload) => api.post(`/products`, data),
-  update: (id: number | string, data: ProductPayload) => api.patch(`/products/${id}`, data),
-  delete: (id: number | string) => api.delete(`/products/${id}`),
+  get: (id: number | string) => api.get(`/v1/products/${id}`),
+  list: (params?: ProductListParams) => api.get(`/v1/products`, { params }),
+  search: (params?: ProductListParams) =>
+    api.get(`/v1/products/search`, { params }),
+  create: (data: ProductPayload) => api.post(`/v1/products`, data),
+  update: (id: number | string, data: ProductPayload) =>
+    api.patch(`/v1/products/${id}`, data),
+  delete: (id: number | string) => api.delete(`/v1/products/${id}`),
 };
 
 // AUTH API
 export const authApi = {
-  login: (data: { email: string; password: string }) => api.post("/auth/login", data),
-  register: (data: { name: string; email: string; password: string }) => api.post("/auth/register", data),
+  login: (data: { email: string; password: string }) =>
+    api.post("/auth/login", data),
+  register: (data: { name: string; email: string; password: string }) =>
+    api.post("/auth/register", data),
 };

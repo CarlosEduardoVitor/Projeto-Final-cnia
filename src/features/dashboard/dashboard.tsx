@@ -3,8 +3,8 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { useProductsQuery } from "@/features/products/hooks/useProductsQuery";
-import CarouselModel from "@/components/carousel/CarouselModel";
-import ModalCreateProduct from "@/components/Modal/Modal"; 
+import CarouselModel from "@/features/carousel/CarouselModel";
+import ModalCreateProduct from "@/features/products/components/create/components/Modal/Modal";
 
 interface DashboardClientProps {
   session: {
@@ -53,6 +53,8 @@ export default function DashboardClient({ session }: DashboardClientProps) {
     setFilters(inputs); 
     setPage(0); 
   };
+
+  console.log("Sessão recebida no DashboardClient:", session)
 
   return (
     <main className="bg-gray-100 dark:bg-gray-900 w-full min-h-[calc(100vh-56px)] py-8 px-10 text-gray-900 dark:text-gray-100">

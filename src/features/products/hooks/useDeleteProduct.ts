@@ -12,11 +12,10 @@ export default function useDeleteProduct() {
       await productApi.delete(id);
     },
     onSuccess: () => {
-      toast.success("Produto deletado!");
       qc.invalidateQueries({ queryKey: ["products"] });
     },
     onError: () => {
-      toast.error("Erro ao deletar produto");
+      console.log("Erro ao excluir")
     },
   });
 }

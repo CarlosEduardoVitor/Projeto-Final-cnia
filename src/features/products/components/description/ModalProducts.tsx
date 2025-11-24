@@ -73,7 +73,7 @@ export default function ModalProduct({ product, onRemove }: Props) {
         <div className="space-y-4 py-4">
           <p className="text-2xl font-bold text-green-600">R$ {product.price.toFixed(2)}</p>
           <p className="text-gray-600 dark:text-gray-400">
-            **{t('modal_quantity_label')}:** {product.quantity}
+            {t('modal_product_quantity_label')}: {product.quantity}
           </p>
         </div>
 
@@ -90,15 +90,15 @@ export default function ModalProduct({ product, onRemove }: Props) {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('alert_delete_title')}</AlertDialogTitle>
+                <AlertDialogTitle>{t('modal_product_delete_confirm_title')}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  {t('alert_delete_description', { name: product.name })}
+                  {t('modal_product_delete_confirm_description', { name: product.name })}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('alert_delete_cancel')}</AlertDialogCancel>
+                <AlertDialogCancel>{t('modal_product_cancel_button')}</AlertDialogCancel>
                 <AlertDialogAction onClick={handleDelete} disabled={isDeleting} className="bg-red-600 hover:bg-red-700">
-                  {isDeleting ? t('alert_delete_pending') : t('alert_delete_confirm')}
+                  {isDeleting ? t('alert_delete_pending') : t('modal_product_delete_button')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

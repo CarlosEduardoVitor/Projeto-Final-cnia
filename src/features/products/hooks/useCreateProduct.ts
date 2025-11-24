@@ -2,7 +2,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { productApi, ProductPayload } from "@/app/api/api";
-import { toast } from "sonner";
 
 export default function useCreateProduct() {
   const qc = useQueryClient();
@@ -13,11 +12,10 @@ export default function useCreateProduct() {
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Produto criado!");
       qc.invalidateQueries({ queryKey: ["products"] });
     },
     onError: () => {
-      toast.error("Erro ao criar produto");
+      console.log("Erro ao criar produto")
     },
   });
 }

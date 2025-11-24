@@ -18,6 +18,8 @@
     "modal_quantity_placeholder": "Quantidade",
     "modal_description_placeholder": "Descrição",
     "modal_create_pending": "Criando...",
+    "product_create_success": "Produto criado com sucesso!",
+    "product_create_error":"Erro ao criar produto",
     "modal_create_button": "Criar Produto",
     "modal_product_details_description": "Informações detalhadas do produto selecionado.",
     "modal_product_no_description": "Sem descrição",
@@ -59,12 +61,14 @@
     "login_password_placeholder": "Sua senha",
     "login_pending": "Entrando...",
     "login_button": "Login",
+    "login_title": "Login",
     
     "register_name_label": "Nome:",
     "register_name_placeholder": "Seu nome",
     "register_confirm_password_placeholder": "Confirmar senha",
     "register_pending": "Cadastrando...",
-    "register_button": "Registrar"
+    "register_button": "Registrar",
+    "register_title": "Register"
   }
 }
   

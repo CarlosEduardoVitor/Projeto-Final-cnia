@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
-import ModalProduct from "@/components/modalProducts/ModalProducts"; // Corrigido o caminho do import
+import ModalProduct from "@/features/products/components/description/ModalProducts";
 import { Product } from "@/types/products";
 import { useTranslations } from "next-intl"; 
 import { Button } from "@/components/ui/button";

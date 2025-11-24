@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 import './globals.css';
 import { ReactNode } from "react";
-import Providers from "./Providers";
+import Providers from "../providers/Providers";
 import { defaultLocale } from "../../i18n"; 
 import { Toaster } from "sonner";
 
