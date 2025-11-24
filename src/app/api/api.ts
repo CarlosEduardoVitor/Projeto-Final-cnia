@@ -1,11 +1,9 @@
-// api.ts
 "use client";
 
 import type { InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 
-// Instância principal para produtos e auth
 export const api = axios.create({
   baseURL: "http://localhost:8080/api",
   headers: { "Content-Type": "application/json" },
@@ -27,7 +25,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Nova instância só para rotas de usuário (com /v1/users)
 export const userApi = axios.create({
   baseURL: "http://localhost:8080/api/v1/users",
   headers: { "Content-Type": "application/json" },

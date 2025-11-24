@@ -8,6 +8,7 @@ import {
   DialogTrigger,
   DialogDescription
 } from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Product } from "@/types/products";
@@ -35,22 +36,32 @@ interface Props {
 
 export default function ModalProduct({ product, onRemove }: Props) {
   const t = useTranslations("Dashboard");
-  const { mutateAsync: deleteProduct, isLoading: isDeleting } = useDeleteProduct();
+
+  const safeT = (key: string, fallback = "") => {
+    try {
+      const str = t(key);
+      return typeof str === "string" && str.length ? str : fallback;
+    } catch {
+      return fallback;
+    }
+  };
+
+  const { mutateAsync: deleteProduct, isPending: isDeleting } = useDeleteProduct();
   const [open, setOpen] = useState(false);
 
   async function handleDelete() {
-    const deletePromise = deleteProduct(product.id);
+    const promise = deleteProduct(product.id);
 
-    await toast.promise(deletePromise, {
-      loading: t('product_delete_pending') || "Deletando produto...",
+    await toast.promise(promise, {
+      loading: safeT("product_delete_pending", "Deletando produto..."),
       success: () => {
         onRemove(product.id);
         setOpen(false);
-        return t('product_delete_success') || "Produto deletado com sucesso!";
+        return safeT("product_delete_success", "Produto deletado com sucesso!");
       },
-      error: (err) => {
-        return err.response?.data?.message || t('product_delete_error') || "Erro ao deletar produto";
-      }
+      error: (err: any) => {
+        return err?.message || safeT("product_delete_error", "Erro ao deletar produto");
+      },
     });
   }
 
@@ -73,7 +84,7 @@ export default function ModalProduct({ product, onRemove }: Props) {
         <div className="space-y-4 py-4">
           <p className="text-2xl font-bold text-green-600">R$ {product.price.toFixed(2)}</p>
           <p className="text-gray-600 dark:text-gray-400">
-            {t('modal_product_quantity_label')}: {product.quantity}
+            {safeT("modal_product_quantity_label", "Quantidade")}: {product.quantity}
           </p>
         </div>
 
@@ -85,20 +96,22 @@ export default function ModalProduct({ product, onRemove }: Props) {
                 disabled={isDeleting}
                 className="transition-colors"
               >
-                {t('modal_product_delete_button')}
+                {safeT("modal_product_delete_button", "Excluir")}
               </Button>
             </AlertDialogTrigger>
+
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('modal_product_delete_confirm_title')}</AlertDialogTitle>
+                <AlertDialogTitle>{safeT("modal_product_delete_confirm_title", "Confirma excluir?")}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  {t('modal_product_delete_confirm_description', { name: product.name })}
+                  {safeT("modal_product_delete_confirm_description", `Tem certeza que deseja excluir "${product.name}"?`)}
                 </AlertDialogDescription>
               </AlertDialogHeader>
+
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('modal_product_cancel_button')}</AlertDialogCancel>
+                <AlertDialogCancel>{safeT("modal_product_cancel_button", "Cancelar")}</AlertDialogCancel>
                 <AlertDialogAction onClick={handleDelete} disabled={isDeleting} className="bg-red-600 hover:bg-red-700">
-                  {isDeleting ? t('alert_delete_pending') : t('modal_product_delete_button')}
+                  {isDeleting ? safeT("alert_delete_pending", "Deletando...") : safeT("modal_product_delete_button", "Excluir")}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -106,7 +119,7 @@ export default function ModalProduct({ product, onRemove }: Props) {
 
           <Link href={`/dashboard/edit/${product.id}`} passHref>
             <Button className="bg-blue-500 hover:bg-blue-600 text-white transition-colors">
-              {t('modal_product_edit_button')}
+              {safeT("modal_product_edit_button", "Editar")}
             </Button>
           </Link>
         </div>

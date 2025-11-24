@@ -1,4 +1,4 @@
-// src/app/(protected)/dashboard/page.tsx
+
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/authOptions";
 import DashboardClient from "@/features/dashboard/dashboard";

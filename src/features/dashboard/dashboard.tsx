@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useProductsQuery } from "@/features/products/hooks/useProductsQuery";
 
 import CarouselModel from "@/features/dashboard/components/carousel/CarouselModel";
-import ModalCreateProduct from "@/features/products/components/create/components/Modal/Modal";
+import ModalCreateProduct from "@/features/products/components/create/components/ModalCreateProduct";
 
 import { useState, useCallback } from "react";
 
